@@ -22,6 +22,9 @@ from .encoder import JSONEncoder
 
 
 class JSONFormFieldBase(object):
+    def __init__(self, *args, **kwargs):
+        self.load_kwargs = kwargs.pop('load_kwargs', {})
+        super(JSONFormFieldBase, self).__init__(*args, **kwargs)
 
     def to_python(self, value):
         if isinstance(value, six.string_types):
@@ -45,6 +48,7 @@ class JSONFormFieldBase(object):
 
 class JSONFormField(JSONFormFieldBase, fields.CharField):
     pass
+
 
 class JSONCharFormField(JSONFormFieldBase, fields.CharField):
     pass
@@ -143,12 +147,13 @@ class JSONFieldBase(six.with_metaclass(SubfieldBase, models.Field)):
         # If the field doesn't have a default, then we punt to models.Field.
         return super(JSONFieldBase, self).get_default()
 
+
 class JSONField(JSONFieldBase, models.TextField):
     """JSONField is a generic textfield that serializes/deserializes JSON objects"""
     form_class = JSONFormField
 
     def dumps_for_display(self, value):
-        kwargs = { "indent": 2 }
+        kwargs = {"indent": 2}
         kwargs.update(self.dump_kwargs)
         return json.dumps(value, **kwargs)
 
