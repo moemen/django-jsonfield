@@ -1,3 +1,11 @@
+Rocketrip Fork
+--------------
+
+Needed this patch:  https://github.com/rocketrip/django-jsonfield/commit/71b1ffbc33428dc1ded87d156bba54d325fdc0bc
+
+Full README below.
+
+
 django-jsonfield
 ----------------
 
