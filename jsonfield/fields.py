@@ -79,10 +79,10 @@ class JSONFieldBase(six.with_metaclass(SubfieldBase, models.Field)):
         deserialized"""
 
         if obj._state.adding:
-            # Make sure the primary key actually exists on the object before
-            # checking if it's empty. This is a special case for South datamigrations
-            # see: https://github.com/bradjasper/django-jsonfield/issues/52
             if isinstance(value, six.string_types):
+                if not value.strip():
+                    return ''
+
                 try:
                     return json.loads(value, **self.load_kwargs)
                 except ValueError:
